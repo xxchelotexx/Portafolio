@@ -120,19 +120,53 @@ const form = document.querySelector("[data-form]");
 const formInputs = document.querySelectorAll("[data-form-input]");
 const formBtn = document.querySelector("[data-form-btn]");
 
-// add event to all form input field
-for (let i = 0; i < formInputs.length; i++) {
-  formInputs[i].addEventListener("input", function () {
+const formulario = document.querySelector(".form");
+const fullNameInput = form.querySelector("input[name='fullname']");
+const messageInput = form.querySelector("textarea[name='message']");
+const correoInput = form.querySelector("input[name='email']")
+const sendButton = form.querySelector("button[type='submit']");
 
-    // check form validation
-    if (form.checkValidity()) {
-      formBtn.removeAttribute("disabled");
-    } else {
-      formBtn.setAttribute("disabled", "");
-    }
+// // add event to all form input field
+// for (let i = 0; i < formInputs.length; i++) {
+//   formInputs[i].addEventListener("input", function () {
 
-  });
-}
+//     // check form validation
+//     if (form.checkValidity()) {
+//       formBtn.removeAttribute("disabled");
+//       const texto = `hola mi nombre es ${fullNameInput} y mi mensaje es ${messageInput}`;
+//       const url = `https://api.whatsapp.com/send/?phone=59176543021&text=${encodeURIComponent(texto)}&type=phone_number&app_absent=0`;
+//       window.open(url, "_blank");
+//     } else {
+//       formBtn.setAttribute("disabled", "");
+//     }
+
+//   });
+// }
+
+    // Habilitar el botón si todos los campos están llenos
+    formulario.addEventListener("input", () => {
+      const isValid = fullNameInput.value.trim() !== "" && messageInput.value.trim() !== "";
+      sendButton.disabled = !isValid;
+    });
+
+    formulario.addEventListener("submit", function (e) {
+      e.preventDefault(); // Evita que el formulario se envíe normalmente
+
+      const nombre = fullNameInput.value.trim();
+      const mensaje = messageInput.value.trim();
+      const correo = correoInput.value.trim();
+
+      if (!nombre || !mensaje) {
+        alert("Por favor, completa todos los campos requeridos.");
+        return;
+      }
+
+      const texto = `Mi nombre es ${nombre}, mi correo es ${correo} y mi mensaje es ${mensaje}`;
+      const url = `https://api.whatsapp.com/send/?phone=59176543021&text=${encodeURIComponent(texto)}&type=phone_number&app_absent=0`;
+
+      window.open(url, "_blank");
+    });
+
 
 
 
